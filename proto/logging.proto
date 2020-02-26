@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package logging;
+
+message Log {
+  string origin = 1;
+  string server = 2;
+  string log = 3;
+  int64 timestamp = 4;
+  int32 ttl = 5;
+}
+
