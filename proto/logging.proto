@@ -10,3 +10,12 @@ message Log {
   int32 ttl = 5;
 }
 
+message LogRequest {
+  Log log = 1;
+}
+
+message LogResponse {}
+
+service LoggingService {
+  rpc Log(LogRequest) returns (LogResponse) {};
+}
