@@ -8,6 +8,8 @@ import (
 
 	"github.com/brotherlogic/goserver"
 	"github.com/brotherlogic/goserver/utils"
+	pb "github.com/brotherlogic/logging/proto"
+	"github.com/golang/protobuf/proto"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/resolver"
@@ -22,12 +24,16 @@ func init() {
 //Server main server type
 type Server struct {
 	*goserver.GoServer
+	path string
+	test bool
 }
 
 // Init builds the server
 func Init() *Server {
 	s := &Server{
 		GoServer: &goserver.GoServer{},
+		path:     "/media/scratch/logs",
+		test:     false,
 	}
 	return s
 }
@@ -55,6 +61,24 @@ func (s *Server) Mote(ctx context.Context, master bool) error {
 // GetState gets the state of the server
 func (s *Server) GetState() []*pbg.State {
 	return []*pbg.State{}
+}
+
+func (s *Server) marshal(logs []*pb.Log) ([]byte, error) {
+	data, err := proto.Marshal(&pb.LogList{Logs: logs})
+	if err != nil {
+		return []byte{}, err
+	}
+	if s.test {
+		return []byte{}, fmt.Errorf("Testing failure")
+	}
+	return data, err
+}
+
+func (s *Server) load(fname string) ([]byte, error) {
+	if s.test {
+		return []byte{}, fmt.Errorf("Test failure")
+	}
+	return ioutil.ReadFile(fname)
 }
 
 func main() {
