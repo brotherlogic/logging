@@ -10,6 +10,10 @@ message Log {
   int32 ttl = 5;
 }
 
+message LogList {
+  repeated Log logs = 1;
+}
+
 message LogRequest {
   Log log = 1;
 }
