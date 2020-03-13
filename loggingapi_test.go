@@ -29,4 +29,12 @@ func TestBasicCall(t *testing.T) {
 		t.Errorf("Error in logging: %v", err)
 	}
 
+	logs, err := s.GetLogs(context.Background(), &pb.GetLogsRequest{Origin: "test"})
+	if err != nil {
+		t.Errorf("Error in logging:%v", err)
+	}
+
+	if len(logs.GetLogs()) != 2 {
+		t.Errorf("bad number of logs: %v", logs)
+	}
 }
