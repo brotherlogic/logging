@@ -45,7 +45,7 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string) ([]*pb.Log, err
 	logs := []*pb.Log{}
 
 	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
-		if strings.Contains(path, origin) {
+		if strings.Contains(path, origin) && !info.IsDir() {
 			nlogs, err := s.loadLogFile(ctx, path)
 			if err != nil {
 				return err

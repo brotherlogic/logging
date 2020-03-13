@@ -21,7 +21,7 @@ message LogRequest {
 message LogResponse {}
 
 message GetLogsRequest {
-  string server = 1;
+  string origin = 1;
 }
 
 message GetLogsResponse {
