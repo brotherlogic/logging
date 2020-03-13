@@ -11,3 +11,8 @@ func (s *Server) Log(ctx context.Context, req *pb.LogRequest) (*pb.LogResponse, 
 	err = s.saveLogs(ctx, req.GetLog().GetOrigin(), req.GetLog().GetTimestamp(), logs)
 	return &pb.LogResponse{}, err
 }
+
+func (s *Server) GetLogs(ctx context.Context, req *pb.GetLogsRequest) (*pb.GetLogsResponse, error) {
+	logs, err := s.loadAllLogs(ctx, req.GetServer())
+	return &pb.GetLogsResponse{Logs: logs}, err
+}

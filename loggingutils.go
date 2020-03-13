@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/golang/protobuf/proto"
@@ -39,9 +41,29 @@ func (s *Server) saveLogs(ctx context.Context, origin string, timestamp int64, l
 	return ioutil.WriteFile(fname, data, 0644)
 }
 
+func (s *Server) loadAllLogs(ctx context.Context, origin string) ([]*pb.Log, error) {
+	logs := []*pb.Log{}
+
+	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
+		if strings.Contains(path, origin) {
+			nlogs, err := s.loadLogFile(ctx, path)
+			if err != nil {
+				return err
+			}
+			logs = append(logs, nlogs...)
+		}
+		return nil
+	})
+
+	return logs, err
+}
+
 func (s *Server) loadLogs(ctx context.Context, origin string, timestamp int64) ([]*pb.Log, error) {
 	fname, _ := s.getFileName(origin, timestamp)
+	return s.loadLogFile(ctx, fname)
+}
 
+func (s *Server) loadLogFile(ctx context.Context, fname string) ([]*pb.Log, error) {
 	if _, err := os.Stat(fname); os.IsNotExist(err) {
 		return []*pb.Log{}, nil
 	}
