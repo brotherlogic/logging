@@ -28,3 +28,15 @@ func TestBadLoad(t *testing.T) {
 	}
 
 }
+
+func TestBadFullLoad(t *testing.T) {
+	s := InitTestServer()
+	s.saveLogs(context.Background(), "blahload", time.Now().Unix(), nil)
+	s.test = true
+
+	_, err := s.loadAllLogs(context.Background(), "blahload")
+	if err == nil {
+		t.Errorf("Did not fail")
+	}
+
+}
