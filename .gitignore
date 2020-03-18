@@ -3,3 +3,5 @@ logging
 .test
 
 *.txt
+
+logging_cli/logging_cli
