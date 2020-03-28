@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
+	"time"
 
 	"github.com/brotherlogic/goserver/utils"
 	"google.golang.org/grpc"
@@ -17,7 +19,7 @@ func init() {
 }
 
 func main() {
-	conn, err := grpc.Dial("discovery:///recordadder", grpc.WithInsecure(), grpc.WithBalancerName("my_pick_first"))
+	conn, err := grpc.Dial("discovery:///logging", grpc.WithInsecure(), grpc.WithBalancerName("my_pick_first"))
 	if err != nil {
 		log.Fatalf("Dial error: %v", err)
 	}
@@ -34,10 +36,15 @@ func main() {
 		res, err = client.GetLogs(ctx, &pb.GetLogsRequest{Origin: os.Args[1]})
 		if err == nil {
 			logs = append(logs, res.GetLogs()...)
+		} else {
+			fmt.Printf("%v\n", err)
 		}
 	}
 
+	sort.SliceStable(logs, func(i, j int) bool { return logs[i].GetTimestamp() > logs[j].GetTimestamp() })
+
+	fmt.Printf("Found %v logs\n", len(logs))
 	for _, l := range logs {
-		fmt.Printf("%v\n", l)
+		fmt.Printf("[%v] %v %v\n", l.GetServer(), time.Unix(l.GetTimestamp(), 0), l.GetLog())
 	}
 }
