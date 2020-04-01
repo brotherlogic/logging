@@ -40,3 +40,9 @@ func TestBadFullLoad(t *testing.T) {
 	}
 
 }
+
+func TestMin(t *testing.T) {
+	if min(1, 10) != 1 || min(10, 1) != 1 {
+		t.Errorf("Min is wrong")
+	}
+}

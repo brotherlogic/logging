@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 
@@ -55,7 +56,19 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string) ([]*pb.Log, err
 		return nil
 	})
 
-	return logs, err
+	sort.SliceStable(logs, func(i, j int) bool {
+		return logs[i].GetTimestamp() < logs[j].GetTimestamp()
+	})
+
+	// Only return 20 logs
+	return logs[0:min(20, len(logs))], err
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
 
 func (s *Server) loadLogs(ctx context.Context, origin string, timestamp int64) ([]*pb.Log, error) {
