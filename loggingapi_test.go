@@ -35,6 +35,6 @@ func TestBasicCall(t *testing.T) {
 	}
 
 	if len(logs.GetLogs()) != 2 {
-		t.Errorf("bad number of logs: %v", logs)
+		t.Errorf("bad number of logs: (%v) %v", len(logs.GetLogs()), logs)
 	}
 }
