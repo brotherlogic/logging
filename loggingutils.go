@@ -57,7 +57,7 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string) ([]*pb.Log, err
 	})
 
 	sort.SliceStable(logs, func(i, j int) bool {
-		return logs[i].GetTimestamp() < logs[j].GetTimestamp()
+		return logs[i].GetTimestamp() > logs[j].GetTimestamp()
 	})
 
 	// Only return 20 logs
