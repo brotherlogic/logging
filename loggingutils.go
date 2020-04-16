@@ -42,7 +42,7 @@ func (s *Server) saveLogs(ctx context.Context, origin string, timestamp int64, l
 	return ioutil.WriteFile(fname, data, 0644)
 }
 
-func (s *Server) loadAllLogs(ctx context.Context, origin string) ([]*pb.Log, error) {
+func (s *Server) loadAllLogs(ctx context.Context, origin string, match string) ([]*pb.Log, error) {
 	logs := []*pb.Log{}
 
 	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
@@ -51,7 +51,11 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string) ([]*pb.Log, err
 			if err != nil {
 				return err
 			}
-			logs = append(logs, nlogs...)
+			for _, log := range nlogs {
+				if match == "" || strings.Contains(log.GetLog(), match) {
+					logs = append(logs, log)
+				}
+			}
 		}
 		return nil
 	})
