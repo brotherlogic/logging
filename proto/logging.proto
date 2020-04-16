@@ -24,6 +24,7 @@ message LogResponse {}
 
 message GetLogsRequest {
   string origin = 1;
+  string match = 2;
 }
 
 message GetLogsResponse {

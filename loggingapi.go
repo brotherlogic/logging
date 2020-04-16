@@ -14,6 +14,6 @@ func (s *Server) Log(ctx context.Context, req *pb.LogRequest) (*pb.LogResponse, 
 
 //GetLogs gets the logs
 func (s *Server) GetLogs(ctx context.Context, req *pb.GetLogsRequest) (*pb.GetLogsResponse, error) {
-	logs, err := s.loadAllLogs(ctx, req.GetOrigin())
+	logs, err := s.loadAllLogs(ctx, req.GetOrigin(), req.GetMatch())
 	return &pb.GetLogsResponse{Logs: logs}, err
 }
