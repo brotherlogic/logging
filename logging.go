@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/brotherlogic/goserver"
 	"github.com/brotherlogic/goserver/utils"
@@ -24,8 +26,9 @@ func init() {
 //Server main server type
 type Server struct {
 	*goserver.GoServer
-	path string
-	test bool
+	path    string
+	dirSize int64
+	test    bool
 }
 
 // Init builds the server
@@ -34,6 +37,7 @@ func Init() *Server {
 		GoServer: &goserver.GoServer{},
 		path:     "/media/scratch/logs",
 		test:     false,
+		dirSize:  0,
 	}
 	return s
 }
@@ -60,7 +64,9 @@ func (s *Server) Mote(ctx context.Context, master bool) error {
 
 // GetState gets the state of the server
 func (s *Server) GetState() []*pbg.State {
-	return []*pbg.State{}
+	return []*pbg.State{
+		&pbg.State{Key: "dir_size", Value: s.dirSize},
+	}
 }
 
 func (s *Server) marshal(logs []*pb.Log) ([]byte, error) {
@@ -81,6 +87,20 @@ func (s *Server) load(fname string) ([]byte, error) {
 	return ioutil.ReadFile(fname)
 }
 
+func (s *Server) readSize() (int64, error) {
+	var size int64
+	err := filepath.Walk(s.path, func(_ string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() {
+			size += info.Size()
+		}
+		return err
+	})
+	return size, err
+}
+
 func main() {
 	var quiet = flag.Bool("quiet", false, "Show all output")
 	flag.Parse()
@@ -99,5 +119,10 @@ func main() {
 		return
 	}
 
+	size, err := server.readSize()
+	if err != nil {
+		fmt.Printf("Error: %v", err)
+	}
+	server.dirSize = size
 	fmt.Printf("%v", server.Serve())
 }

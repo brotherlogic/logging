@@ -9,7 +9,9 @@ import (
 
 	"github.com/brotherlogic/goserver/utils"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/resolver"
+	"google.golang.org/grpc/status"
 
 	pb "github.com/brotherlogic/logging/proto"
 )
@@ -32,9 +34,12 @@ func main() {
 	err = nil
 	var res *pb.GetLogsResponse
 	logs := []*pb.Log{}
-	for err == nil {
-		res, err = client.GetLogs(ctx, &pb.GetLogsRequest{Origin: os.Args[1]})
-		fmt.Printf("%v\n", err)
+	matcher := ""
+	if len(os.Args) > 2 {
+		matcher = os.Args[2]
+	}
+	for err == nil || status.Convert(err).Code() == codes.FailedPrecondition {
+		res, err = client.GetLogs(ctx, &pb.GetLogsRequest{Origin: os.Args[1], Match: matcher})
 		if err == nil {
 			logs = append(logs, res.GetLogs()...)
 		}
