@@ -7,11 +7,14 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/brotherlogic/goserver"
 	"github.com/brotherlogic/goserver/utils"
 	pb "github.com/brotherlogic/logging/proto"
 	"github.com/golang/protobuf/proto"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/resolver"
@@ -23,12 +26,20 @@ func init() {
 	resolver.Register(&utils.DiscoveryServerResolverBuilder{})
 }
 
+var (
+	//Backlog - the print queue
+	DirSize = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: "logging_dirsize",
+		Help: "The size of the logs",
+	})
+)
+
 //Server main server type
 type Server struct {
 	*goserver.GoServer
 	path    string
-	dirSize int64
 	test    bool
+	dirSize int64
 }
 
 // Init builds the server
@@ -101,6 +112,13 @@ func (s *Server) readSize() (int64, error) {
 	return size, err
 }
 
+func (s *Server) checkSize(ctx context.Context) error {
+	if s.dirSize > 10*1024*1024 {
+		s.RaiseIssue(ctx, "Lots of logging", fmt.Sprintf("There are %v logs - this is too much", s.dirSize), false)
+	}
+	return nil
+}
+
 func main() {
 	var quiet = flag.Bool("quiet", false, "Show all output")
 	flag.Parse()
@@ -123,6 +141,10 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error: %v", err)
 	}
+	DirSize.Set(float64(size))
 	server.dirSize = size
+
+	server.RegisterRepeatingTaskNonMaster(server.checkSize, "check_size", time.Minute*5)
+
 	fmt.Printf("%v", server.Serve())
 }
