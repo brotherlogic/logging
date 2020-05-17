@@ -114,7 +114,7 @@ func (s *Server) readSize() (int64, error) {
 
 func (s *Server) checkSize(ctx context.Context) error {
 	if s.dirSize > 10*1024*1024 {
-		s.RaiseIssue(ctx, "Lots of logging", fmt.Sprintf("There are %v logs - this is too much", s.dirSize), false)
+		s.RaiseIssue(ctx, "Lots of logging", fmt.Sprintf("There are %v logs on %v - this is too much", s.dirSize, s.Registry.GetIdentifier()), false)
 	}
 	return nil
 }
