@@ -68,6 +68,31 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string) (
 	return logs[0:min(20, len(logs))], err
 }
 
+func (s *Server) cleanAllLogs(ctx context.Context) error {
+	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
+			nlogs, err := s.loadLogFile(ctx, path)
+			if err != nil {
+				return err
+			}
+			newlogs := []*pb.Log{}
+			for _, log := range nlogs {
+				if time.Now().Sub(time.Unix(log.GetTimestamp(), 0)).Seconds() < float64(log.GetTtl()) {
+					newlogs = append(newlogs, log)
+				}
+			}
+			data, err := s.marshal(newlogs)
+			if err == nil {
+				err = ioutil.WriteFile(path, data, 0644)
+			}
+			return err
+		}
+		return nil
+	})
+
+	return err
+}
+
 func min(a, b int) int {
 	if a < b {
 		return a

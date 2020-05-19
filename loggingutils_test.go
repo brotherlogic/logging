@@ -27,6 +27,11 @@ func TestBadLoad(t *testing.T) {
 		t.Errorf("Did not fail")
 	}
 
+	err = s.cleanAllLogs(context.Background())
+	if err == nil {
+		t.Errorf("Did not fail")
+	}
+
 }
 
 func TestBadFullLoad(t *testing.T) {
@@ -39,6 +44,10 @@ func TestBadFullLoad(t *testing.T) {
 		t.Errorf("Did not fail")
 	}
 
+	err = s.cleanAllLogs(context.Background())
+	if err == nil {
+		t.Errorf("Did not fail")
+	}
 }
 
 func TestMin(t *testing.T) {
