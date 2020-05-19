@@ -27,7 +27,7 @@ func init() {
 }
 
 var (
-	//Backlog - the print queue
+	//DirSize - the print queue
 	DirSize = promauto.NewGauge(prometheus.GaugeOpts{
 		Name: "logging_dirsize",
 		Help: "The size of the logs",
@@ -98,6 +98,17 @@ func (s *Server) load(fname string) ([]byte, error) {
 	return ioutil.ReadFile(fname)
 }
 
+func (s *Server) clean(ctx context.Context) error {
+	s.cleanAllLogs(ctx)
+	size, err := s.readSize()
+	if err != nil {
+		return err
+	}
+	DirSize.Set(float64(size))
+	s.dirSize = size
+	return nil
+}
+
 func (s *Server) readSize() (int64, error) {
 	var size int64
 	err := filepath.Walk(s.path, func(_ string, info os.FileInfo, err error) error {
@@ -145,6 +156,7 @@ func main() {
 	server.dirSize = size
 
 	server.RegisterRepeatingTaskNonMaster(server.checkSize, "check_size", time.Minute*5)
+	server.RegisterRepeatingTaskNonMaster(server.clean, "clean", time.Hour)
 
 	fmt.Printf("%v", server.Serve())
 }

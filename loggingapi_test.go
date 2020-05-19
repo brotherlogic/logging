@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"os"
 	"testing"
 	"time"
 
@@ -10,6 +11,7 @@ import (
 
 func InitTestServer() *Server {
 	s := Init()
+	os.RemoveAll(".test")
 	s.path = ".test"
 	return s
 }
@@ -17,13 +19,13 @@ func InitTestServer() *Server {
 func TestBasicCall(t *testing.T) {
 	s := InitTestServer()
 
-	_, err := s.Log(context.Background(), &pb.LogRequest{Log: &pb.Log{Origin: "test", Timestamp: time.Now().Unix()}})
+	_, err := s.Log(context.Background(), &pb.LogRequest{Log: &pb.Log{Origin: "test", Timestamp: time.Now().Unix(), Ttl: 1}})
 
 	if err != nil {
 		t.Errorf("Error in logging: %v", err)
 	}
 
-	_, err = s.Log(context.Background(), &pb.LogRequest{Log: &pb.Log{Origin: "test", Timestamp: time.Now().Unix()}})
+	_, err = s.Log(context.Background(), &pb.LogRequest{Log: &pb.Log{Origin: "test", Timestamp: time.Now().Unix(), Ttl: 1}})
 
 	if err != nil {
 		t.Errorf("Error in logging: %v", err)
@@ -37,4 +39,19 @@ func TestBasicCall(t *testing.T) {
 	if len(logs.GetLogs()) != 2 {
 		t.Errorf("bad number of logs: (%v) %v", len(logs.GetLogs()), logs)
 	}
+
+	time.Sleep(time.Second * 5)
+
+	_, err = s.Log(context.Background(), &pb.LogRequest{Log: &pb.Log{Origin: "test", Timestamp: time.Now().Unix(), Ttl: 1}})
+	s.clean(context.Background())
+
+	logs, err = s.GetLogs(context.Background(), &pb.GetLogsRequest{Origin: "test"})
+	if err != nil {
+		t.Errorf("Error in logging:%v", err)
+	}
+
+	if len(logs.GetLogs()) != 1 {
+		t.Errorf("bad number of logs: (%v) %v", len(logs.GetLogs()), logs)
+	}
+
 }
