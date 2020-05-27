@@ -109,7 +109,7 @@ func (s *Server) clean(ctx context.Context) error {
 }
 
 func (s *Server) readSize() (int64, error) {
-	files, err := ioutil.ReadDir("./")
+	files, err := ioutil.ReadDir(s.path)
 	if err != nil {
 		return -1, err
 	}
