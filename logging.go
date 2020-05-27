@@ -28,10 +28,10 @@ func init() {
 
 var (
 	//DirSize - the print queue
-	DirSize = promauto.NewGauge(prometheus.GaugeOpts{
+	DirSize = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "logging_dirsize",
 		Help: "The size of the logs",
-	})
+	}, []string{"base"})
 )
 
 //Server main server type
@@ -104,14 +104,33 @@ func (s *Server) clean(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	DirSize.Set(float64(size))
 	s.dirSize = size
 	return nil
 }
 
 func (s *Server) readSize() (int64, error) {
+	files, err := ioutil.ReadDir("./")
+	if err != nil {
+		return -1, err
+	}
+
+	dirSize := int64(0)
+	for _, f := range files {
+		if f.IsDir() {
+			size, err := s.readDirSize(f.Name())
+			if err != nil {
+				return -1, err
+			}
+			DirSize.With(prometheus.Labels{"base": f.Name()}).Set(float64(size))
+			dirSize += size
+		}
+	}
+	return dirSize, nil
+}
+
+func (s *Server) readDirSize(base string) (int64, error) {
 	var size int64
-	err := filepath.Walk(s.path, func(_ string, info os.FileInfo, err error) error {
+	err := filepath.Walk(s.path+base, func(_ string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -149,10 +168,6 @@ func main() {
 	}
 
 	size, err := server.readSize()
-	if err != nil {
-		fmt.Printf("Error: %v", err)
-	}
-	DirSize.Set(float64(size))
 	server.dirSize = size
 
 	server.RegisterRepeatingTaskNonMaster(server.checkSize, "check_size", time.Minute*5)
