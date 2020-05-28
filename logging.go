@@ -46,7 +46,7 @@ type Server struct {
 func Init() *Server {
 	s := &Server{
 		GoServer: &goserver.GoServer{},
-		path:     "/media/scratch/logs",
+		path:     "/media/scratch/logs/",
 		test:     false,
 		dirSize:  0,
 	}
