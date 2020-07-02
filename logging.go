@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/brotherlogic/goserver"
 	"github.com/brotherlogic/goserver/utils"
@@ -144,7 +143,7 @@ func (s *Server) readDirSize(base string) (int64, error) {
 
 func (s *Server) checkSize(ctx context.Context) error {
 	if s.dirSize > 10*1024*1024 {
-		s.RaiseIssue(ctx, "Lots of logging", fmt.Sprintf("There are %v logs on %v - this is too much", s.dirSize, s.Registry.GetIdentifier()), false)
+		s.RaiseIssue("Lots of logging", fmt.Sprintf("There are %v logs on %v - this is too much", s.dirSize, s.Registry.GetIdentifier()))
 	}
 	return nil
 }
@@ -162,16 +161,13 @@ func main() {
 	server.PrepServer()
 	server.Register = server
 
-	err := server.RegisterServerV2("logging", false, false)
+	err := server.RegisterServerV2("logging", false, true)
 	if err != nil {
 		return
 	}
 
 	size, err := server.readSize()
 	server.dirSize = size
-
-	server.RegisterRepeatingTaskNonMaster(server.checkSize, "check_size", time.Minute*5)
-	server.RegisterRepeatingTaskNonMaster(server.clean, "clean", time.Hour)
 
 	fmt.Printf("%v", server.Serve())
 }
