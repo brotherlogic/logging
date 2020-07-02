@@ -27,7 +27,7 @@ func main() {
 		defer cancel()
 		conn, err := utils.LFDial(server)
 		if err != nil {
-			log.Printf("Dial error: %v", err)
+			fmt.Printf("Dial error: %v", err)
 			continue
 		}
 		defer conn.Close()
