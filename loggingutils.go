@@ -47,7 +47,7 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string) (
 
 	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
 		if strings.Contains(path, origin) && !info.IsDir() {
-			nlogs, err := s.loadLogFile(ctx, path)
+			nlogs, err := s.loadLogFile(path)
 			if err != nil {
 				return err
 			}
@@ -68,10 +68,10 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string) (
 	return logs[0:min(20, len(logs))], err
 }
 
-func (s *Server) cleanAllLogs(ctx context.Context) error {
+func (s *Server) cleanAllLogs() error {
 	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
 		if !info.IsDir() {
-			nlogs, err := s.loadLogFile(ctx, path)
+			nlogs, err := s.loadLogFile(path)
 			if err != nil {
 				return err
 			}
@@ -102,10 +102,10 @@ func min(a, b int) int {
 
 func (s *Server) loadLogs(ctx context.Context, origin string, timestamp int64) ([]*pb.Log, error) {
 	fname, _ := s.getFileName(origin, timestamp)
-	return s.loadLogFile(ctx, fname)
+	return s.loadLogFile(fname)
 }
 
-func (s *Server) loadLogFile(ctx context.Context, fname string) ([]*pb.Log, error) {
+func (s *Server) loadLogFile(fname string) ([]*pb.Log, error) {
 	if _, err := os.Stat(fname); os.IsNotExist(err) {
 		return []*pb.Log{}, nil
 	}
