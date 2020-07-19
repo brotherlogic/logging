@@ -95,8 +95,8 @@ func (s *Server) load(fname string) ([]byte, error) {
 	return ioutil.ReadFile(fname)
 }
 
-func (s *Server) clean(ctx context.Context) error {
-	s.cleanAllLogs(ctx)
+func (s *Server) clean() error {
+	s.cleanAllLogs()
 	size, err := s.readSize()
 	if err != nil {
 		return err
@@ -166,6 +166,8 @@ func main() {
 
 	size, err := server.readSize()
 	server.dirSize = size
+
+	server.clean()
 
 	fmt.Printf("%v", server.Serve())
 }

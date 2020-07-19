@@ -43,7 +43,7 @@ func TestBasicCall(t *testing.T) {
 	time.Sleep(time.Second * 5)
 
 	_, err = s.Log(context.Background(), &pb.LogRequest{Log: &pb.Log{Origin: "test", Timestamp: time.Now().Unix(), Ttl: 1}})
-	s.clean(context.Background())
+	s.clean()
 
 	logs, err = s.GetLogs(context.Background(), &pb.GetLogsRequest{Origin: "test"})
 	if err != nil {
