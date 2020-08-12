@@ -1,11 +1,23 @@
 package main
 
-import "golang.org/x/net/context"
+import (
+	"golang.org/x/net/context"
 
-import pb "github.com/brotherlogic/logging/proto"
+	pb "github.com/brotherlogic/logging/proto"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
+)
+
+var (
+	request = promauto.NewCounterVec(prometheus.CounterOpts{
+		Name: "logging_requests",
+		Help: "The size of the logs",
+	}, []string{"origin"})
+)
 
 //Log logs a message
 func (s *Server) Log(ctx context.Context, req *pb.LogRequest) (*pb.LogResponse, error) {
+	request.With(prometheus.Labels{"origin": req.GetLog().GetOrigin()}).Inc()
 	logs, err := s.loadLogs(ctx, req.GetLog().GetOrigin(), req.GetLog().GetTimestamp())
 	logs = append(logs, req.GetLog())
 	err = s.saveLogs(ctx, req.GetLog().GetOrigin(), req.GetLog().GetTimestamp(), logs)
