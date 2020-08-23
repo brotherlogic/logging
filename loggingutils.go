@@ -70,7 +70,7 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string) (
 
 func (s *Server) cleanAllLogs() error {
 	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() {
+		if info != nil && !info.IsDir() {
 			nlogs, err := s.loadLogFile(path)
 			if err != nil {
 				return err
