@@ -1,12 +1,15 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
+	"time"
 
 	"github.com/brotherlogic/goserver"
 	"github.com/brotherlogic/goserver/utils"
@@ -37,6 +40,7 @@ var (
 type Server struct {
 	*goserver.GoServer
 	path    string
+	dpath   string
 	test    bool
 	dirSize int64
 }
@@ -46,6 +50,7 @@ func Init() *Server {
 	s := &Server{
 		GoServer: &goserver.GoServer{},
 		path:     "/media/scratch/logs/",
+		dpath:    "/media/scratch/dlogs",
 		test:     false,
 		dirSize:  0,
 	}
@@ -95,6 +100,45 @@ func (s *Server) load(fname string) ([]byte, error) {
 		return []byte{}, fmt.Errorf("Test failure")
 	}
 	return ioutil.ReadFile(fname)
+}
+
+func convert(line []string) *pb.Log {
+	time, _ := time.Parse(time.RFC3339Nano, line[0])
+
+	return &pb.Log{
+		Timestamp: time.Unix(),
+		Context:   line[1],
+		Log:       line[2],
+	}
+}
+
+func (s *Server) loadDLog(fname string) ([]*pb.Log, error) {
+	if s.test {
+		return nil, fmt.Errorf("Built to fail")
+	}
+	file, err := os.Open(fname)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	var logs []*pb.Log
+	for scanner.Scan() {
+		line := scanner.Text()
+		elems := strings.Split(line, "|")
+
+		if len(elems) == 3 {
+			logs = append(logs, convert(elems))
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return logs, nil
+
 }
 
 func (s *Server) clean() error {

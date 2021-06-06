@@ -42,7 +42,7 @@ func (s *Server) saveLogs(ctx context.Context, origin string, timestamp int64, l
 	return ioutil.WriteFile(fname, data, 0644)
 }
 
-func (s *Server) loadAllLogs(ctx context.Context, origin string, match string) ([]*pb.Log, error) {
+func (s *Server) loadAllLogs(ctx context.Context, origin string, match string, includeDLogs bool) ([]*pb.Log, error) {
 	logs := []*pb.Log{}
 
 	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
@@ -59,6 +59,32 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string) (
 		}
 		return nil
 	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	// Walk the dlogs if we've been asked to
+	if includeDLogs {
+		err = filepath.Walk(fmt.Sprintf("%v/%v", s.dpath, origin), func(path string, info os.FileInfo, err error) error {
+			if strings.Contains(path, origin) && !info.IsDir() {
+				dlogs, err := s.loadDLogFile(path)
+				if err != nil {
+					return err
+				}
+				for _, log := range dlogs {
+					if match == "" || strings.Contains(log.GetLog(), match) {
+						logs = append(logs, log)
+					}
+				}
+			}
+			return nil
+		})
+
+		if err != nil {
+			return nil, err
+		}
+	}
 
 	sort.SliceStable(logs, func(i, j int) bool {
 		return logs[i].GetTimestamp() > logs[j].GetTimestamp()
@@ -118,4 +144,8 @@ func (s *Server) loadLogFile(fname string) ([]*pb.Log, error) {
 	list := &pb.LogList{}
 	proto.Unmarshal(data, list)
 	return list.GetLogs(), nil
+}
+
+func (s *Server) loadDLogFile(fname string) ([]*pb.Log, error) {
+	return s.loadDLog(fname)
 }
