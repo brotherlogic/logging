@@ -40,6 +40,7 @@ var (
 type Server struct {
 	*goserver.GoServer
 	path    string
+	dpath   string
 	test    bool
 	dirSize int64
 }
@@ -49,6 +50,7 @@ func Init() *Server {
 	s := &Server{
 		GoServer: &goserver.GoServer{},
 		path:     "/media/scratch/logs/",
+		dpath:    "/media/scratch/dlogs",
 		test:     false,
 		dirSize:  0,
 	}
@@ -101,7 +103,7 @@ func (s *Server) load(fname string) ([]byte, error) {
 }
 
 func convert(line []string) *pb.Log {
-	time, _ := time.Parse("2021-06-02 18:40:05.570247657 -0700 PDT", line[0])
+	time, _ := time.Parse(time.RFC3339Nano, line[0])
 
 	return &pb.Log{
 		Timestamp: time.Unix(),
