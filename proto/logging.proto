@@ -10,6 +10,7 @@ message Log {
   string log = 3;
   int64 timestamp = 4;
   int32 ttl = 5;
+  string context = 6;
 }
 
 message LogList {
@@ -25,6 +26,7 @@ message LogResponse {}
 message GetLogsRequest {
   string origin = 1;
   string match = 2;
+  bool include_dlogs = 3;
 }
 
 message GetLogsResponse {
