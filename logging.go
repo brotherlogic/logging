@@ -113,6 +113,9 @@ func convert(line []string) *pb.Log {
 }
 
 func (s *Server) loadDLog(fname string) ([]*pb.Log, error) {
+	if s.test {
+		return nil, fmt.Errorf("Built to fail")
+	}
 	file, err := os.Open(fname)
 	if err != nil {
 		return nil, err

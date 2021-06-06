@@ -72,3 +72,13 @@ func TestDLogCall(t *testing.T) {
 		t.Errorf("Bad timestamp: %v", logs.GetLogs()[0])
 	}
 }
+
+func TestDLogCallFail(t *testing.T) {
+	s := InitTestServer()
+	s.test = true
+
+	logs, err := s.GetLogs(context.Background(), &pb.GetLogsRequest{Origin: "testbin", IncludeDlogs: true})
+	if err == nil {
+		t.Errorf("Should have failed: %v", logs)
+	}
+}
