@@ -147,9 +147,5 @@ func (s *Server) loadLogFile(fname string) ([]*pb.Log, error) {
 }
 
 func (s *Server) loadDLogFile(fname string) ([]*pb.Log, error) {
-	if _, err := os.Stat(fname); os.IsNotExist(err) {
-		return []*pb.Log{}, nil
-	}
-
 	return s.loadDLog(fname)
 }
