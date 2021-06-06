@@ -25,7 +25,7 @@ jobs:
       run: go build github.com/${GITHUB_REPOSITORY}
 
     - name: Run test
-      run: go test github.com/brotherlogic/reminders/ -coverprofile=profile.cov
+      run: go test github.com/${GITHUB_REPOSITORY} -coverprofile=profile.cov
     
     - name: Coveralls
       uses: shogo82148/actions-goveralls@v1
