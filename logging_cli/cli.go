@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	ctx, cancel := utils.ManualContext("logging-cli", "logging", time.Second*10, false)
+	ctx, cancel := utils.ManualContext("logging-cli", time.Second*10)
 	defer cancel()
 	servers, err := utils.LFFind(ctx, "logging")
 
@@ -23,7 +23,7 @@ func main() {
 
 	logs := []*pb.Log{}
 	for _, server := range servers {
-		ctx, cancel := utils.ManualContext("logging-cli", "logging", time.Minute, false)
+		ctx, cancel := utils.ManualContext("logging-cli", time.Minute)
 		defer cancel()
 		conn, err := utils.LFDial(server)
 		if err != nil {
