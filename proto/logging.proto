@@ -27,6 +27,7 @@ message GetLogsRequest {
   string origin = 1;
   string match = 2;
   bool include_dlogs = 3;
+  string context = 4;
 }
 
 message GetLogsResponse {

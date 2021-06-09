@@ -39,7 +39,12 @@ func main() {
 			matcher = os.Args[2]
 		}
 
-		res, err = client.GetLogs(ctx, &pb.GetLogsRequest{Origin: os.Args[1], Match: matcher})
+		context := ""
+		if len(os.Args) > 3 {
+			context = os.Args[3]
+		}
+
+		res, err = client.GetLogs(ctx, &pb.GetLogsRequest{Origin: os.Args[1], Match: matcher, IncludeDlogs: true, Context: context})
 		if err == nil {
 			logs = append(logs, res.GetLogs()...)
 		}
