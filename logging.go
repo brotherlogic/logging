@@ -102,13 +102,14 @@ func (s *Server) load(fname string) ([]byte, error) {
 	return ioutil.ReadFile(fname)
 }
 
-func convert(line []string) *pb.Log {
+func (s *Server) convert(line []string) *pb.Log {
 	time, _ := time.Parse(time.RFC3339Nano, line[0])
 
 	return &pb.Log{
 		Timestamp: time.Unix(),
 		Context:   line[1],
 		Log:       line[2],
+		Origin:    s.Registry.Identifier,
 	}
 }
 
@@ -129,7 +130,7 @@ func (s *Server) loadDLog(fname string) ([]*pb.Log, error) {
 		elems := strings.Split(line, "|")
 
 		if len(elems) == 3 {
-			logs = append(logs, convert(elems))
+			logs = append(logs, s.convert(elems))
 		}
 	}
 
