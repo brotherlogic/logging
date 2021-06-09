@@ -10,9 +10,23 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/proto"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	"golang.org/x/net/context"
 
 	pb "github.com/brotherlogic/logging/proto"
+)
+
+var (
+	//DirSize - the print queue
+	filtered = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: "logging_filtered",
+		Help: "The size of the logs",
+	})
+	original = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: "logging_original",
+		Help: "The size of the logs",
+	})
 )
 
 func (s *Server) getFileName(origin string, timestamp int64) (string, string) {
@@ -97,6 +111,9 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string, i
 			nlogs = append(nlogs, log)
 		}
 	}
+
+	original.Set(float64(len(logs)))
+	filtered.Set(float64(len(nlogs)))
 
 	// Only return 20 logs
 	return nlogs[0:min(20, len(nlogs))], err

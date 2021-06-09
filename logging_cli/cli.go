@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -16,6 +17,11 @@ func main() {
 	ctx, cancel := utils.ManualContext("logging-cli", time.Second*10)
 	defer cancel()
 	servers, err := utils.LFFind(ctx, "logging")
+
+	logFlags := flag.NewFlagSet("AddRecords", flag.ExitOnError)
+	var include = logFlags.Bool("dlog", false, "Include dlogs")
+	var matcher = logFlags.String("match", "", "Search string")
+	var context = logFlags.String("context", "", "Context to search for")
 
 	if err != nil {
 		log.Fatalf("Error finding logging servers: %v", err)
@@ -34,19 +40,12 @@ func main() {
 		client := pb.NewLoggingServiceClient(conn)
 
 		var res *pb.GetLogsResponse
-		matcher := ""
-		if len(os.Args) > 2 {
-			matcher = os.Args[2]
-		}
 
-		context := ""
-		if len(os.Args) > 3 {
-			context = os.Args[3]
-		}
-
-		res, err = client.GetLogs(ctx, &pb.GetLogsRequest{Origin: os.Args[1], Match: matcher, IncludeDlogs: true, Context: context})
-		if err == nil {
-			logs = append(logs, res.GetLogs()...)
+		if err := logFlags.Parse(os.Args[2:]); err == nil {
+			res, err = client.GetLogs(ctx, &pb.GetLogsRequest{Origin: os.Args[1], Match: *matcher, IncludeDlogs: *include, Context: *context})
+			if err == nil {
+				logs = append(logs, res.GetLogs()...)
+			}
 		}
 
 	}
