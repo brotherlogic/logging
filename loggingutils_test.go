@@ -39,7 +39,7 @@ func TestBadFullLoad(t *testing.T) {
 	s.saveLogs(context.Background(), "blahload", time.Now().Unix(), nil)
 	s.test = true
 
-	_, err := s.loadAllLogs(context.Background(), "blahload", "", false)
+	_, err := s.loadAllLogs(context.Background(), "blahload", "", false, "")
 	if err == nil {
 		t.Errorf("Did not fail")
 	}
