@@ -82,7 +82,7 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string, i
 
 	// Walk the dlogs if we've been asked to
 	if includeDLogs {
-		err = filepath.Walk(fmt.Sprintf("%v/%v", s.dpath, origin), func(path string, info os.FileInfo, err error) error {
+		err := filepath.Walk(fmt.Sprintf("%v/%v", s.dpath, origin), func(path string, info os.FileInfo, err error) error {
 			if (origin == "" || strings.Contains(path, origin)) && !info.IsDir() {
 				dlogs, err := s.loadDLogFile(path, origin, context)
 				if err != nil {
@@ -118,7 +118,7 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string, i
 	filtered.Set(float64(len(nlogs)))
 
 	// Only return 20 logs
-	return nlogs[0:min(20, len(nlogs))], err
+	return nlogs[0:min(20, len(nlogs))], nil
 }
 
 func (s *Server) cleanAllLogs() error {
