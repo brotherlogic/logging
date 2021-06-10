@@ -59,23 +59,25 @@ func (s *Server) saveLogs(ctx context.Context, origin string, timestamp int64, l
 func (s *Server) loadAllLogs(ctx context.Context, origin string, match string, includeDLogs bool, context string) ([]*pb.Log, error) {
 	logs := []*pb.Log{}
 
-	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
-		if strings.Contains(path, origin) && !info.IsDir() {
-			nlogs, err := s.loadLogFile(path)
-			if err != nil {
-				return err
-			}
-			for _, log := range nlogs {
-				if match == "" || strings.Contains(log.GetLog(), match) {
-					logs = append(logs, log)
+	if !includeDLogs {
+		err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
+			if strings.Contains(path, origin) && !info.IsDir() {
+				nlogs, err := s.loadLogFile(path)
+				if err != nil {
+					return err
+				}
+				for _, log := range nlogs {
+					if match == "" || strings.Contains(log.GetLog(), match) {
+						logs = append(logs, log)
+					}
 				}
 			}
-		}
-		return nil
-	})
+			return nil
+		})
 
-	if err != nil {
-		return nil, err
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// Walk the dlogs if we've been asked to
