@@ -113,7 +113,11 @@ func (s *Server) convert(line []string) *pb.Log {
 	}
 }
 
-func (s *Server) loadDLog(fname string) ([]*pb.Log, error) {
+func (s *Server) loadDLog(fname, origin, context string) ([]*pb.Log, error) {
+	if origin != "" || !strings.Contains(fname, origin) {
+		return make([]*pb.Log, 0), nil
+	}
+
 	if s.test {
 		return nil, fmt.Errorf("Built to fail for the test")
 	}
@@ -129,7 +133,7 @@ func (s *Server) loadDLog(fname string) ([]*pb.Log, error) {
 		line := scanner.Text()
 		elems := strings.Split(line, "|")
 
-		if len(elems) == 3 {
+		if len(elems) == 3 && (context == "" || elems[1] == context) {
 			logs = append(logs, s.convert(elems))
 		}
 	}
