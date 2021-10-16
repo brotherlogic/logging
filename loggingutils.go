@@ -46,7 +46,10 @@ func (s *Server) getFileName(origin string, timestamp int64) (string, string) {
 
 func (s *Server) saveLogs(ctx context.Context, origin string, timestamp int64, logs []*pb.Log) error {
 	fname, dir := s.getFileName(origin, timestamp)
-	os.MkdirAll(dir, 0777)
+	err := os.MkdirAll(dir, 0777)
+	if err != nil {
+		return err
+	}
 
 	data, err := s.marshal(logs)
 	if err != nil {
