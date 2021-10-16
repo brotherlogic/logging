@@ -3,14 +3,13 @@ module github.com/brotherlogic/logging
 go 1.13
 
 require (
-	github.com/brotherlogic/discovery v0.0.0-20210609231824-1f75ecb34f74 // indirect
-	github.com/brotherlogic/goserver v0.0.0-20210611234816-6b4f83ef9c79
+	github.com/brotherlogic/gobuildslave v0.0.0-20211007142439-eddd197e9a0c // indirect
+	github.com/brotherlogic/goserver v0.0.0-20211015164718-2a55d9c24de1
 	github.com/golang/protobuf v1.5.2
 	github.com/prometheus/client_golang v1.11.0
-	github.com/prometheus/common v0.29.0 // indirect
-	golang.org/x/net v0.0.0-20210610132358-84b48f89b13b
-	golang.org/x/sys v0.0.0-20210611083646-a4fc73990273 // indirect
-	google.golang.org/genproto v0.0.0-20210611144927-798beca9d670 // indirect
-	google.golang.org/grpc v1.38.0
-	google.golang.org/protobuf v1.26.0
+	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f
+	golang.org/x/sys v0.0.0-20211015200801-69063c4bb744 // indirect
+	google.golang.org/genproto v0.0.0-20211016002631-37fc39342514 // indirect
+	google.golang.org/grpc v1.41.0
+	google.golang.org/protobuf v1.27.1
 )
