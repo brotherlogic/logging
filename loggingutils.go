@@ -46,7 +46,10 @@ func (s *Server) getFileName(origin string, timestamp int64) (string, string) {
 
 func (s *Server) saveLogs(ctx context.Context, origin string, timestamp int64, logs []*pb.Log) error {
 	fname, dir := s.getFileName(origin, timestamp)
-	os.MkdirAll(dir, 0777)
+	err := os.MkdirAll(dir, 0777)
+	if err != nil {
+		return err
+	}
 
 	data, err := s.marshal(logs)
 	if err != nil {
@@ -130,7 +133,7 @@ func (s *Server) cleanAllLogs() error {
 			}
 			newlogs := []*pb.Log{}
 			for _, log := range nlogs {
-				if time.Now().Sub(time.Unix(log.GetTimestamp(), 0)).Seconds() < float64(log.GetTtl()) {
+				if time.Since(time.Unix(log.GetTimestamp(), 0)).Seconds() < float64(log.GetTtl()) {
 					newlogs = append(newlogs, log)
 				}
 			}
