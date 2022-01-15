@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"sort"
+	"sync"
 	"time"
 
 	"github.com/brotherlogic/goserver/utils"
@@ -28,27 +29,33 @@ func main() {
 	}
 
 	logs := []*pb.Log{}
+	var wg sync.WaitGroup
 	for _, server := range servers {
-		ctx, cancel := utils.ManualContext("logging-cli", time.Minute)
-		defer cancel()
-		conn, err := utils.LFDial(server)
-		if err != nil {
-			fmt.Printf("Dial error: %v", err)
-			continue
-		}
-		defer conn.Close()
-		client := pb.NewLoggingServiceClient(conn)
-
-		var res *pb.GetLogsResponse
-
-		if err := logFlags.Parse(os.Args[2:]); err == nil {
-			res, err = client.GetLogs(ctx, &pb.GetLogsRequest{Origin: os.Args[1], Match: *matcher, IncludeDlogs: *include, Context: *context})
-			if err == nil {
-				logs = append(logs, res.GetLogs()...)
+		wg.Add(1)
+		go func(serv string) {
+			defer wg.Done()
+			ctx, cancel := utils.ManualContext("logging-cli", time.Minute)
+			defer cancel()
+			conn, err := utils.LFDial(serv)
+			if err != nil {
+				fmt.Printf("Dial error: %v", err)
+				return
 			}
-		}
+			defer conn.Close()
+			client := pb.NewLoggingServiceClient(conn)
 
+			var res *pb.GetLogsResponse
+
+			if err := logFlags.Parse(os.Args[2:]); err == nil {
+				res, err = client.GetLogs(ctx, &pb.GetLogsRequest{Origin: os.Args[1], Match: *matcher, IncludeDlogs: *include, Context: *context})
+				if err == nil {
+					logs = append(logs, res.GetLogs()...)
+				}
+			}
+		}(server)
 	}
+
+	wg.Wait()
 
 	sort.SliceStable(logs, func(i, j int) bool {
 		return logs[i].GetTimestamp() > logs[j].GetTimestamp()
