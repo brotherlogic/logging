@@ -107,9 +107,9 @@ func (s *Server) convert(line []string) *pb.Log {
 
 	return &pb.Log{
 		Timestamp: time.Unix(),
-		Context:   line[1],
-		Log:       line[2],
-		Origin:    s.Registry.Identifier,
+		Context:   line[2],
+		Log:       line[4],
+		Origin:    line[1],
 	}
 }
 
@@ -135,7 +135,7 @@ func (s *Server) loadDLog(fname, origin, ctx string) ([]*pb.Log, error) {
 		elems := strings.Split(line, "|")
 
 		if len(elems) == 3 && (ctx == "" || elems[1] == ctx) {
-			logs = append(logs, s.convert(elems))
+			logs = append(logs, s.convertD(elems))
 		}
 	}
 
