@@ -86,15 +86,17 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string, i
 	// Walk the dlogs if we've been asked to
 	if includeDLogs {
 		err := filepath.Walk(fmt.Sprintf("%v/%v", s.dpath, origin), func(path string, info os.FileInfo, err error) error {
-			s.CtxLog(ctx, fmt.Sprintf("Huh %v, %v, %v, %v", origin, path, info, err))
-			if (origin == "" || strings.Contains(path, origin)) && !info.IsDir() {
-				dlogs, err := s.loadDLogFile(path, origin, context)
-				if err != nil {
-					return err
-				}
-				for _, log := range dlogs {
-					if match == "" || strings.Contains(log.GetLog(), match) {
-						logs = append(logs, log)
+			if err == nil {
+
+				if (origin == "" || strings.Contains(path, origin)) && !info.IsDir() {
+					dlogs, err := s.loadDLogFile(path, origin, context)
+					if err != nil {
+						return err
+					}
+					for _, log := range dlogs {
+						if match == "" || strings.Contains(log.GetLog(), match) {
+							logs = append(logs, log)
+						}
 					}
 				}
 			}
