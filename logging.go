@@ -135,7 +135,7 @@ func (s *Server) loadDLog(fname, origin, ctx string) ([]*pb.Log, error) {
 		elems := strings.Split(line, "|")
 
 		if len(elems) == 3 && (ctx == "" || elems[1] == ctx) {
-			logs = append(logs, s.convertD(elems))
+			logs = append(logs, s.convert(elems))
 		}
 	}
 
