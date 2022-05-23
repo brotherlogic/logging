@@ -87,7 +87,6 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string, i
 	if includeDLogs {
 		err := filepath.Walk(fmt.Sprintf("%v/%v", s.dpath, origin), func(path string, info os.FileInfo, err error) error {
 			if err == nil {
-
 				if (origin == "" || strings.Contains(path, origin)) && !info.IsDir() {
 					dlogs, err := s.loadDLogFile(path, origin, context)
 					if err != nil {

@@ -113,7 +113,8 @@ func (s *Server) convert(line []string) *pb.Log {
 	}
 }
 
-func (s *Server) loadDLog(fname, origin, context string) ([]*pb.Log, error) {
+func (s *Server) loadDLog(fname, origin, ctx string) ([]*pb.Log, error) {
+	s.CtxLog(context.Background(), fmt.Sprintf("Attemping to load: %v", fname))
 	if origin != "" || !strings.Contains(fname, origin) {
 		return make([]*pb.Log, 0), nil
 	}
@@ -133,7 +134,7 @@ func (s *Server) loadDLog(fname, origin, context string) ([]*pb.Log, error) {
 		line := scanner.Text()
 		elems := strings.Split(line, "|")
 
-		if len(elems) == 3 && (context == "" || elems[1] == context) {
+		if len(elems) == 3 && (ctx == "" || elems[1] == ctx) {
 			logs = append(logs, s.convert(elems))
 		}
 	}
