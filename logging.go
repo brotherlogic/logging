@@ -115,6 +115,7 @@ func (s *Server) convert(line []string) *pb.Log {
 }
 
 func (s *Server) loadDLog(fname, origin, ctx string) ([]*pb.Log, error) {
+	s.CtxLog(context.Background(), fmt.Sprintf("Logging %v -> %v, %v", fname, origin, origin != "" && !strings.Contains(fname, origin)))
 	if origin != "" && !strings.Contains(fname, origin) {
 		return make([]*pb.Log, 0), nil
 	}
@@ -143,6 +144,7 @@ func (s *Server) loadDLog(fname, origin, ctx string) ([]*pb.Log, error) {
 		return nil, err
 	}
 
+	s.CtxLog(context.Background(), fmt.Sprintf("Read %v logs", len(logs)))
 	return logs, nil
 
 }
