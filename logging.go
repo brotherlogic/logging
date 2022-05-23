@@ -105,11 +105,10 @@ func (s *Server) load(fname string) ([]byte, error) {
 func (s *Server) convert(line []string) *pb.Log {
 	time, _ := time.Parse(time.RFC3339Nano, line[0])
 
-	s.DLog(context.Background(), fmt.Sprintf("CONVERTING %v", line[4]))
 	return &pb.Log{
 		Timestamp: time.Unix(),
 		Context:   line[2],
-		Log:       line[4],
+		Log:       line[3],
 		Origin:    line[1],
 	}
 }
