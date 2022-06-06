@@ -134,8 +134,10 @@ func (s *Server) loadDLog(fname, origin, ctx string) ([]*pb.Log, error) {
 		line := scanner.Text()
 		elems := strings.Split(line, "|")
 
-		if len(elems) >= 3 && (ctx == "" || elems[2] == ctx) {
+		if len(elems) >= 4 && (ctx == "" || elems[2] == ctx) {
 			logs = append(logs, s.convert(elems))
+		} else {
+			s.RaiseIssue("Weird log line", fmt.Sprintf("Line is: %v -> %v", line, elems))
 		}
 	}
 
