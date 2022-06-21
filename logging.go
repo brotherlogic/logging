@@ -106,7 +106,7 @@ func (s *Server) convert(line []string) *pb.Log {
 	time, _ := time.Parse(time.RFC3339Nano, line[0])
 
 	return &pb.Log{
-		Timestamp: time.Unix(),
+		Timestamp: time.UnixNano(),
 		Context:   line[2],
 		Log:       line[3],
 		Origin:    line[1],

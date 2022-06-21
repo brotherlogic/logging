@@ -63,7 +63,7 @@ func main() {
 		})
 
 		for _, l := range logs {
-			fmt.Printf("%v - %v\n", time.Unix(l.GetTimestamp(), 0), l)
+			fmt.Printf("%v - %v\n", time.Unix(0, l.GetTimestamp()), l)
 		}
 	}
 }
