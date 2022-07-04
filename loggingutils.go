@@ -129,6 +129,7 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string, i
 func (s *Server) cleanAllLogs() error {
 	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
 		if info != nil && !info.IsDir() {
+			s.DLog(context.Background(), fmt.Sprintf("Cleaning %v", path))
 			nlogs, err := s.loadLogFile(path)
 			if err != nil {
 				return err
