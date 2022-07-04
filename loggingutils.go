@@ -127,6 +127,7 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string, i
 }
 
 func (s *Server) cleanAllLogs() error {
+	var toDelete []string
 	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
 		if info != nil && !info.IsDir() {
 			s.DLog(context.Background(), fmt.Sprintf("Cleaning %v", path))
@@ -140,14 +141,24 @@ func (s *Server) cleanAllLogs() error {
 					newlogs = append(newlogs, log)
 				}
 			}
-			data, err := s.marshal(newlogs)
-			if err == nil {
-				err = ioutil.WriteFile(path, data, 0644)
+			if len(newlogs) > 0 {
+				data, err := s.marshal(newlogs)
+				if err == nil {
+					err = ioutil.WriteFile(path, data, 0644)
+					return err
+				}
+			} else {
+				// We can delete this file
+				toDelete = append(toDelete, path)
+
 			}
-			return err
 		}
 		return nil
 	})
+
+	for _, td := range toDelete {
+		os.Remove(td)
+	}
 
 	return err
 }
