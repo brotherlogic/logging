@@ -211,7 +211,7 @@ func main() {
 		log.SetOutput(ioutil.Discard)
 	}
 	server := Init()
-	server.PrepServer()
+	server.PrepServer("logging")
 	server.Register = server
 
 	server.DLog(context.Background(), "Reading size")
@@ -221,7 +221,7 @@ func main() {
 	server.DLog(context.Background(), "Cleaning")
 	server.clean()
 
-	err := server.RegisterServerV2("logging", false, true)
+	err := server.RegisterServerV2(false)
 	if err != nil {
 		return
 	}

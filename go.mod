@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/brotherlogic/discovery v0.0.0-20220704142859-442f6aa6d37d // indirect
 	github.com/brotherlogic/gobuildslave v0.0.0-20220704150406-bf8b3e163f21 // indirect
-	github.com/brotherlogic/goserver v0.0.0-20220704160120-e0200aaf456f
+	github.com/brotherlogic/goserver v0.0.0-20220704163014-9b8401c6212c
 	github.com/golang/protobuf v1.5.2
 	github.com/prometheus/client_golang v1.12.2
 	golang.org/x/net v0.0.0-20220630215102-69896b714898
