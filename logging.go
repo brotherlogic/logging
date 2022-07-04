@@ -219,9 +219,11 @@ func main() {
 		return
 	}
 
-	size, err := server.readSize()
+	server.DLog(context.Background(), "Reading size")
+	size, _ := server.readSize()
 	server.dirSize = size
 
+	server.DLog(context.Background(), "Cleaning")
 	server.clean()
 
 	fmt.Printf("%v", server.Serve())
