@@ -137,8 +137,7 @@ func (s *Server) cleanAllLogs() error {
 			}
 			newlogs := []*pb.Log{}
 			for _, log := range nlogs {
-				if time.Since(time.Unix(log.GetTimestamp(), 0)).Seconds() < float64(log.GetTtl()) {
-					s.DLog(context.Background(), fmt.Sprintf("TTL: %v -> %v from (%v)", log.GetTtl(), time.Since(time.Unix(log.GetTimestamp(), 0)).Seconds(), time.Unix(log.GetTimestamp(), 0)))
+				if time.Since(time.Unix(0, log.GetTimestamp())).Seconds() < float64(log.GetTtl()) {
 					newlogs = append(newlogs, log)
 				}
 			}
