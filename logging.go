@@ -72,11 +72,6 @@ func (s *Server) Shutdown(ctx context.Context) error {
 	return nil
 }
 
-// Mote promotes/demotes this server
-func (s *Server) Mote(ctx context.Context, master bool) error {
-	return nil
-}
-
 // GetState gets the state of the server
 func (s *Server) GetState() []*pbg.State {
 	return []*pbg.State{
