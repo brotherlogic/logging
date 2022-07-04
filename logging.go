@@ -214,17 +214,17 @@ func main() {
 	server.PrepServer()
 	server.Register = server
 
-	err := server.RegisterServerV2("logging", false, true)
-	if err != nil {
-		return
-	}
-
 	server.DLog(context.Background(), "Reading size")
 	size, _ := server.readSize()
 	server.dirSize = size
 
 	server.DLog(context.Background(), "Cleaning")
 	server.clean()
+
+	err := server.RegisterServerV2("logging", false, true)
+	if err != nil {
+		return
+	}
 
 	fmt.Printf("%v", server.Serve())
 }
