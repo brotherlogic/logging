@@ -30,7 +30,7 @@ var (
 )
 
 func (s *Server) getFileName(origin string, timestamp int64) (string, string) {
-	t := time.Unix(timestamp, 0)
+	t := time.Unix(0, timestamp)
 	return fmt.Sprintf("%v/%v/%v-%v-%v-%v.logs",
 			s.path,
 			origin,
