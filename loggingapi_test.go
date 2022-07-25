@@ -14,6 +14,8 @@ func InitTestServer() *Server {
 	os.RemoveAll(".test")
 	s.path = ".test"
 	s.dpath = "testdata/"
+	s.SkipIssue = true
+	s.SkipLog = true
 	return s
 }
 
@@ -38,13 +40,16 @@ func TestBasicCall(t *testing.T) {
 	}
 
 	if len(logs.GetLogs()) != 2 {
-		t.Errorf("bad number of logs: (%v) %v", len(logs.GetLogs()), logs)
+		t.Errorf("bad number of logs first pass: (%v) %v", len(logs.GetLogs()), logs)
 	}
 
+	s.clean()
 	time.Sleep(time.Second * 5)
 
 	_, err = s.Log(context.Background(), &pb.LogRequest{Log: &pb.Log{Origin: "test", Timestamp: time.Now().Unix(), Ttl: 1}})
-	s.clean()
+	if err != nil {
+		t.Errorf("Bad log: %v", err)
+	}
 
 	logs, err = s.GetLogs(context.Background(), &pb.GetLogsRequest{Origin: "test"})
 	if err != nil {
@@ -52,7 +57,7 @@ func TestBasicCall(t *testing.T) {
 	}
 
 	if len(logs.GetLogs()) != 1 {
-		t.Errorf("bad number of logs: (%v) %v", len(logs.GetLogs()), logs)
+		t.Errorf("bad number of logs second pass: (%v) %v", len(logs.GetLogs()), logs)
 	}
 }
 
@@ -68,8 +73,8 @@ func TestDLogCall(t *testing.T) {
 		t.Fatalf("No logs read")
 	}
 
-	if logs.GetLogs()[0].Timestamp != 1136214245 {
-		t.Errorf("Bad timestamp: %v", logs.GetLogs()[0])
+	if logs.GetLogs()[0].Timestamp != 1136214245999999999 {
+		t.Errorf("Bad timestamp: %v -> %v", logs.GetLogs()[0], logs.GetLogs()[0].Timestamp)
 	}
 }
 
