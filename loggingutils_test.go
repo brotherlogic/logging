@@ -14,7 +14,7 @@ func TestConvert(t *testing.T) {
 	conv := s.convert(strings.Split(val, "|"))
 
 	if time.Unix(0, conv.GetTimestamp()).Format(time.RFC3339Nano) != "2022-06-20T19:13:28.861837314-07:00" {
-		t.Errorf("Onversion issue: %v (vs) %v", time.Unix(conv.GetTimestamp(), 0).Format(time.RFC3339Nano), conv.GetTimestamp())
+		t.Errorf("Onversion issue: %v (vs) %v", time.Unix(0, conv.GetTimestamp()).Format(time.RFC3339Nano), conv.GetTimestamp())
 	}
 }
 
