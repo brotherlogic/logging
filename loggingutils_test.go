@@ -10,11 +10,12 @@ import (
 
 func TestConvert(t *testing.T) {
 	s := InitTestServer()
-	val := "2022-06-20T19:13:28.861837314-07:00|clust2|recordcleaner-cli-1655777608-1633026440451240047-toru|S: /recordcleaner.RecordCleanerService/GetClean <-  bytes"
+	vstr := time.Unix(0, 1655777608861837314).Format(time.RFC3339Nano)
+	val := vstr + "|clust2|recordcleaner-cli-1655777608-1633026440451240047-toru|S: /recordcleaner.RecordCleanerService/GetClean <-  bytes"
 	conv := s.convert(strings.Split(val, "|"))
 
-	if time.Unix(0, conv.GetTimestamp()).Format(time.RFC3339Nano) != "2022-06-20T19:13:28.861837314-07:00" {
-		t.Errorf("Onversion issue: %v", time.Unix(conv.GetTimestamp(), 0).Format(time.RFC3339Nano))
+	if time.Unix(0, conv.GetTimestamp()).Format(time.RFC3339Nano) != vstr {
+		t.Errorf("Onversion issue: %v (vs) %v", time.Unix(0, conv.GetTimestamp()).Format(time.RFC3339Nano), conv.GetTimestamp())
 	}
 }
 
@@ -24,7 +25,7 @@ func TestBadSave(t *testing.T) {
 
 	err := s.saveLogs(context.Background(), "blah", time.Now().Unix(), nil)
 	if err == nil {
-		t.Errorf("Did not fail")
+		t.Errorf("did not fail, it was expected to")
 	}
 }
 
