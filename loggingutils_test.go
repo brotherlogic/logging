@@ -25,7 +25,7 @@ func TestBadSave(t *testing.T) {
 
 	err := s.saveLogs(context.Background(), "blah", time.Now().Unix(), nil)
 	if err == nil {
-		t.Errorf("Did not fail")
+		t.Errorf("did not fail, it was expected to")
 	}
 }
 
