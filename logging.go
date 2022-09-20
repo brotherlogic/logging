@@ -108,8 +108,8 @@ func (s *Server) convert(line []string) *pb.Log {
 	}
 }
 
-func (s *Server) loadDLog(fname, origin, ctx string) ([]*pb.Log, error) {
-	s.CtxLog(context.Background(), fmt.Sprintf("Logging %v -> %v, %v", fname, origin, origin != "" && !strings.Contains(fname, origin)))
+func (s *Server) loadDLog(ctx context.Context, fname, origin, ctxstr string) ([]*pb.Log, error) {
+	s.CtxLog(ctx, fmt.Sprintf("Logging %v -> %v, %v", fname, origin, origin != "" && !strings.Contains(fname, origin)))
 	if origin != "" && !strings.Contains(fname, origin) {
 		return make([]*pb.Log, 0), nil
 	}
@@ -129,7 +129,7 @@ func (s *Server) loadDLog(fname, origin, ctx string) ([]*pb.Log, error) {
 		line := scanner.Text()
 		elems := strings.Split(line, "|")
 
-		if len(elems) >= 4 && (ctx == "" || elems[2] == ctx) {
+		if len(elems) >= 4 && (ctxstr == "" || elems[2] == ctxstr) {
 			logs = append(logs, s.convert(elems))
 		} else if len(elems) < 4 {
 			s.RaiseIssue("Weird log line", fmt.Sprintf("Line is: %v -> %v", line, elems))
@@ -140,7 +140,7 @@ func (s *Server) loadDLog(fname, origin, ctx string) ([]*pb.Log, error) {
 		return nil, err
 	}
 
-	s.CtxLog(context.Background(), fmt.Sprintf("Read %v logs", len(logs)))
+	s.CtxLog(ctx, fmt.Sprintf("Read %v logs", len(logs)))
 	return logs, nil
 
 }
