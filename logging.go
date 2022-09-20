@@ -145,8 +145,8 @@ func (s *Server) loadDLog(ctx context.Context, fname, origin, ctxstr string) ([]
 
 }
 
-func (s *Server) clean() error {
-	s.cleanAllLogs()
+func (s *Server) clean(ctx context.Context) error {
+	s.cleanAllLogs(ctx)
 	size, err := s.readSize()
 	if err != nil {
 		return err
@@ -212,7 +212,9 @@ func main() {
 	size, _ := server.readSize()
 	server.dirSize = size
 
-	server.clean()
+	ctx, cancel := utils.ManualContext("logging-clean", time.Minute)
+	server.clean(ctx)
+	cancel()
 
 	err := server.RegisterServerV2(false)
 	if err != nil {

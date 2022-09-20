@@ -126,11 +126,11 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string, i
 	return nlogs[0:min(20, len(nlogs))], nil
 }
 
-func (s *Server) cleanAllLogs() error {
+func (s *Server) cleanAllLogs(ctx context.Context) error {
 	var toDelete []string
 	err := filepath.Walk(s.path, func(path string, info os.FileInfo, err error) error {
 		if info != nil && !info.IsDir() {
-			s.DLog(context.Background(), fmt.Sprintf("Cleaning %v", path))
+			s.DLog(ctx, fmt.Sprintf("Cleaning %v", path))
 			nlogs, err := s.loadLogFile(path)
 			if err != nil {
 				return err
