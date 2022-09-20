@@ -209,11 +209,9 @@ func main() {
 	server.PrepServer("logging")
 	server.Register = server
 
-	server.DLog(context.Background(), "Reading size")
 	size, _ := server.readSize()
 	server.dirSize = size
 
-	server.DLog(context.Background(), "Cleaning")
 	server.clean()
 
 	err := server.RegisterServerV2(false)
