@@ -14,7 +14,7 @@ import (
 	"github.com/brotherlogic/goserver"
 	"github.com/brotherlogic/goserver/utils"
 	pb "github.com/brotherlogic/logging/proto"
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"golang.org/x/net/context"
