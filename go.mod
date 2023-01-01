@@ -3,7 +3,7 @@ module github.com/brotherlogic/logging
 go 1.16
 
 require (
-	github.com/brotherlogic/githubcard v0.0.0-20230101072059-8120f0871177 // indirect
+	github.com/brotherlogic/githubcard v0.0.0-20230101072631-dcc4a0e0d7ed // indirect
 	github.com/brotherlogic/goserver v0.0.0-20221217002224-0ba5c0213be1
 	github.com/golang/protobuf v1.5.2
 	github.com/prometheus/client_golang v1.14.0
