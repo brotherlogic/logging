@@ -43,7 +43,7 @@ func TestBasicCall(t *testing.T) {
 		t.Errorf("bad number of logs first pass: (%v) %v", len(logs.GetLogs()), logs)
 	}
 
-	s.clean()
+	s.clean(context.Background())
 	time.Sleep(time.Second * 5)
 
 	_, err = s.Log(context.Background(), &pb.LogRequest{Log: &pb.Log{Origin: "test", Timestamp: time.Now().Unix(), Ttl: 1}})
