@@ -14,19 +14,14 @@ import (
 	"github.com/brotherlogic/goserver"
 	"github.com/brotherlogic/goserver/utils"
 	pb "github.com/brotherlogic/logging/proto"
-	"google.golang.org/protobuf/proto"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/resolver"
+	"google.golang.org/protobuf/proto"
 
 	pbg "github.com/brotherlogic/goserver/proto"
 )
-
-func init() {
-	resolver.Register(&utils.DiscoveryServerResolverBuilder{})
-}
 
 var (
 	//DirSize - the print queue
