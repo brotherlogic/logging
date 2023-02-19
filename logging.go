@@ -31,7 +31,7 @@ var (
 	}, []string{"base"})
 )
 
-//Server main server type
+// Server main server type
 type Server struct {
 	*goserver.GoServer
 	path    string
@@ -62,7 +62,7 @@ func (s *Server) ReportHealth() bool {
 	return true
 }
 
-//Shutdown the server
+// Shutdown the server
 func (s *Server) Shutdown(ctx context.Context) error {
 	return nil
 }
@@ -126,6 +126,7 @@ func (s *Server) loadDLog(ctx context.Context, fname, origin, ctxstr string) ([]
 
 		if len(elems) >= 4 && (ctxstr == "" || elems[2] == ctxstr) {
 			logs = append(logs, s.convert(elems))
+			loaded.Set(float64(len(logs)))
 		} else if len(elems) < 4 {
 			s.RaiseIssue("Weird log line", fmt.Sprintf("Line is: %v -> %v", line, elems))
 		}

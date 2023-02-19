@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	"google.golang.org/protobuf/proto"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"golang.org/x/net/context"
+	"google.golang.org/protobuf/proto"
 
 	pb "github.com/brotherlogic/logging/proto"
 )
@@ -25,6 +25,10 @@ var (
 	})
 	original = promauto.NewGauge(prometheus.GaugeOpts{
 		Name: "logging_original",
+		Help: "The size of the logs",
+	})
+	loaded = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: "logging_loaded",
 		Help: "The size of the logs",
 	})
 )
@@ -89,6 +93,7 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string, i
 			if err == nil {
 				if (origin == "" || strings.Contains(path, origin)) && !info.IsDir() {
 					dlogs, err := s.loadDLogFile(ctx, path, origin, context)
+
 					if err != nil {
 						return err
 					}
