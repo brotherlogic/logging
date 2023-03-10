@@ -51,8 +51,6 @@ func main() {
 				res, err = client.GetLogs(ctx, &pb.GetLogsRequest{Origin: os.Args[1], Match: *matcher, IncludeDlogs: *include, Context: *context})
 				if err == nil {
 					logs = append(logs, res.GetLogs()...)
-				} else {
-					fmt.Printf("Logs read error: (%v) %v\n", serv, err)
 				}
 			}(server)
 		}
