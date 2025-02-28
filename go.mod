@@ -19,7 +19,7 @@ require (
 	github.com/brotherlogic/dstore v0.0.0-20250225075507-36e72d54649f // indirect
 	github.com/brotherlogic/githubcard v0.0.0-20250225071259-6a9396fd6310 // indirect
 	github.com/brotherlogic/githubridge v0.2848.0 // indirect
-	github.com/brotherlogic/gobuildslave v0.0.0-20250225081912-5a97782adbe1 // indirect
+	github.com/brotherlogic/gobuildslave v0.0.0-20250228221331-5eb3f8b3a653 // indirect
 	github.com/brotherlogic/keystore v0.0.0-20240508161349-814b3200b126 // indirect
 	github.com/brotherlogic/lock v0.0.0-20250225072145-6df89d4f9bb8 // indirect
 	github.com/brotherlogic/monitor v0.0.0-20221025152653-c10877c5f9e6 // indirect
@@ -34,5 +34,5 @@ require (
 	github.com/struCoder/pidusage v0.2.1 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250224174004-546df14abb99 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250227231956-55c901821b1e // indirect
 )
