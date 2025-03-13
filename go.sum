@@ -8,8 +8,8 @@ github.com/brotherlogic/discovery v0.0.0-20241109204028-02908558af09 h1:/G6RM6m/
 github.com/brotherlogic/discovery v0.0.0-20241109204028-02908558af09/go.mod h1:ih6YWeSvJfqZHdtPujz/mbs2fdnLD9HKVnPYplvriEY=
 github.com/brotherlogic/dstore v0.0.0-20250312231859-7be32f89c6a1 h1:itP39VjZHFjRcJaNDIRNBHwLT8sGXi/Ysh7+hasT7i8=
 github.com/brotherlogic/dstore v0.0.0-20250312231859-7be32f89c6a1/go.mod h1:agJZChVfr/y0JQIscPjxWTPFP9XCPQybdjtjQxsiJIQ=
-github.com/brotherlogic/githubcard v0.0.0-20250312225103-2d0021697c7f h1:ZqtE7JEBZxyC/1vYRena2SvAU/unRNpVCzgqiLJFMlg=
-github.com/brotherlogic/githubcard v0.0.0-20250312225103-2d0021697c7f/go.mod h1:RwO8QrFdyTZjl7WvqdNMSsFiAmCDctjZasuIsvwMOZI=
+github.com/brotherlogic/githubcard v0.0.0-20250312235232-8a3404c377ff h1:8Ii+ioyP3GqS2G2W7RhRgyf+8mfi17qcx0US2fzQGJE=
+github.com/brotherlogic/githubcard v0.0.0-20250312235232-8a3404c377ff/go.mod h1:Zpr2+U9O0kJ0AU5/4bN1k1cPnTFx3Jl9K3aldo/RvBM=
 github.com/brotherlogic/githubridge v0.2849.0 h1:jv3r2RBtCrIUaV97opwFkamhlLqWJFVXLtmPVh/UCIA=
 github.com/brotherlogic/githubridge v0.2849.0/go.mod h1:1Izl2qh17QzTwv4+0Waq/xAnbaywurJQHSN19/PlPvU=
 github.com/brotherlogic/gobuildslave v0.0.0-20250312234730-219ac8a9efd1 h1:ebtx2FTJbytKg8HMw8rhnmTcbQOlZG9h9vYcPqja+vg=
