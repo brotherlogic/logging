@@ -8,8 +8,8 @@ github.com/brotherlogic/discovery v0.0.0-20241109204028-02908558af09 h1:/G6RM6m/
 github.com/brotherlogic/discovery v0.0.0-20241109204028-02908558af09/go.mod h1:ih6YWeSvJfqZHdtPujz/mbs2fdnLD9HKVnPYplvriEY=
 github.com/brotherlogic/dstore v0.0.0-20250317102151-38884914f27a h1:/8r1K0ClapV1OV/uiw1YESfsfEycbMlmrVWO1eDCJXM=
 github.com/brotherlogic/dstore v0.0.0-20250317102151-38884914f27a/go.mod h1:AtxfiBAmU7udpO7CYjCSzAOwTdJQJ1l9GmpeW0xCvrM=
-github.com/brotherlogic/githubcard v0.0.0-20250317110602-3c01ae65a566 h1:y2VMhwGq0bO/z0oMJ8XgM6V/MN0ugf11c2tphOad/e0=
-github.com/brotherlogic/githubcard v0.0.0-20250317110602-3c01ae65a566/go.mod h1:uSe6HGCSOFTGq/G24XiSxozK17jC7dFi5UtPGN4uJUI=
+github.com/brotherlogic/githubcard v0.0.0-20250317111516-e4e735c34808 h1:QKzzKhs61vQ5qCBePPsu3ZfDdw8TqJdN+d48a9UzYzY=
+github.com/brotherlogic/githubcard v0.0.0-20250317111516-e4e735c34808/go.mod h1:Uk1dRKyqaxufSJQEXCjANh1c+HxTO2MXP7TJUyVr3AY=
 github.com/brotherlogic/githubridge v0.2849.0 h1:jv3r2RBtCrIUaV97opwFkamhlLqWJFVXLtmPVh/UCIA=
 github.com/brotherlogic/githubridge v0.2849.0/go.mod h1:1Izl2qh17QzTwv4+0Waq/xAnbaywurJQHSN19/PlPvU=
 github.com/brotherlogic/gobuildslave v0.0.0-20250317103652-f901663e0399 h1:IqNnAPs8IKaa6kEwJata+bOFcfIgxqNdU9aEWPAsBT4=
@@ -20,8 +20,8 @@ github.com/brotherlogic/goserver v0.0.0-20250123145056-95c6fbb2310a h1:rni9hUmBP
 github.com/brotherlogic/goserver v0.0.0-20250123145056-95c6fbb2310a/go.mod h1:QbrdZ+d2/FKUG5c9BmQS3yXssOTMOb0nlZyZNcS0UMM=
 github.com/brotherlogic/keystore v0.0.0-20240508161349-814b3200b126 h1:6e12Cl80VtMghgEyTyx1tZB1mUSSBHeLhKvikwb7kIQ=
 github.com/brotherlogic/keystore v0.0.0-20240508161349-814b3200b126/go.mod h1:2JK2kJhI5ler7e7M1WtIpIkiNGG2qy8V6X7VZLCsd5k=
-github.com/brotherlogic/lock v0.0.0-20250317100953-b4c1bfbf3705 h1:Z9krXORpMeyqFttfEF/KFewu3Eq4xhUR0rkiE4uk19U=
-github.com/brotherlogic/lock v0.0.0-20250317100953-b4c1bfbf3705/go.mod h1:LgNmn7KPgIzjJS16aOCCrbBVi7IEHaogXcVx9dC6Zh8=
+github.com/brotherlogic/lock v0.0.0-20250317111310-ca531dea510c h1:mIkWqTnQH/xkOdXe0d25j++fZcnp4W4cyYTc5c4pNjk=
+github.com/brotherlogic/lock v0.0.0-20250317111310-ca531dea510c/go.mod h1:ztzA7LCow+L2iPSzxvVojBI+wNnp74z8qiAdEafRNzA=
 github.com/brotherlogic/monitor v0.0.0-20221025152653-c10877c5f9e6 h1:hxu2T9JspE76sL3XAx/CNtA9bOO6QCEJkyG9rBXFEVA=
 github.com/brotherlogic/monitor v0.0.0-20221025152653-c10877c5f9e6/go.mod h1:babny4VO2GqFwjXqhJsP4a6la4XJeMT6f4BgLBPq4G8=
 github.com/brotherlogic/recordcollection v0.0.0-20240507141004-bfb0a1e980c6 h1:0a1gaVNjbTEDo+1eT98pHIMxojrIlxk69ZqYav5c6jQ=
