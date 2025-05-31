@@ -7,18 +7,18 @@ require (
 	github.com/golang/protobuf v1.5.4
 	github.com/prometheus/client_golang v1.22.0
 	golang.org/x/net v0.40.0
-	google.golang.org/grpc v1.72.1
+	google.golang.org/grpc v1.72.2
 	google.golang.org/protobuf v1.36.6
 )
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/brotherlogic/buildserver v0.0.0-20250522232219-b5775fed3ad2 // indirect
+	github.com/brotherlogic/buildserver v0.0.0-20250529235606-ea98e53afe29 // indirect
 	github.com/brotherlogic/datastore v0.0.0-20250501192221-40c62e0c9e0b // indirect
 	github.com/brotherlogic/discovery v0.0.0-20250510023052-d0207340fd9e // indirect
-	github.com/brotherlogic/dstore v0.0.0-20250522044449-f116e466047c // indirect
-	github.com/brotherlogic/githubcard v0.0.0-20250517033556-832dd91f6099 // indirect
-	github.com/brotherlogic/githubridge v0.2857.0 // indirect
+	github.com/brotherlogic/dstore v0.0.0-20250529051141-593989409c04 // indirect
+	github.com/brotherlogic/githubcard v0.0.0-20250524034235-074634b63c61 // indirect
+	github.com/brotherlogic/githubridge v0.2859.0 // indirect
 	github.com/brotherlogic/gobuildslave v0.0.0-20250509192246-2e37750a2b43 // indirect
 	github.com/brotherlogic/keystore v0.0.0-20240508161349-814b3200b126 // indirect
 	github.com/brotherlogic/lock v0.0.0-20250524004012-506a8e9caae6 // indirect
@@ -33,5 +33,5 @@ require (
 	github.com/struCoder/pidusage v0.2.1 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.25.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250519155744-55703ea1f237 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250528174236-200df99c418a // indirect
 )
