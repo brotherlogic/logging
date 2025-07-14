@@ -16,7 +16,7 @@ var (
 
 	logSize = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "logging_logsize",
-	}, []string{"orgin"})
+	}, []string{"origin"})
 )
 
 // Log logs a message
