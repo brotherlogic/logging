@@ -76,6 +76,9 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string, i
 				for _, log := range nlogs {
 					if match == "" || strings.Contains(log.GetLog(), match) {
 						logs = append(logs, log)
+						if len(logs) >= 20 {
+							return filepath.SkipDir
+						}
 					}
 				}
 			}
@@ -100,6 +103,9 @@ func (s *Server) loadAllLogs(ctx context.Context, origin string, match string, i
 					for _, log := range dlogs {
 						if match == "" || strings.Contains(log.GetLog(), match) {
 							logs = append(logs, log)
+							if len(logs) >= 20 {
+								return filepath.SkipDir
+							}
 						}
 					}
 				}
